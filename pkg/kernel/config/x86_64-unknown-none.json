@@ -4,7 +4,7 @@
   "arch": "x86_64",
   "target-endian": "little",
   "target-pointer-width": "64",
-  "target-c-int-width": "32",
+  "target-c-int-width": 32,
   "os": "none",
   "executables": true,
   "linker-flavor": "ld.lld",
@@ -13,7 +13,6 @@
   "disable-redzone": true,
   "features": "-mmx,-sse,+soft-float",
   "rustc-abi": "x86-softfloat",
-  "panic-strategy": "abort",
   "pre-link-args": {
     "ld.lld": ["-Tpkg/kernel/config/kernel.ld", "-export-dynamic"]
   }

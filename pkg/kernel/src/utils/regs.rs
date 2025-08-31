@@ -29,7 +29,7 @@ pub struct Registers {
 
 impl Registers {
     #[inline]
-    pub unsafe fn as_mut(&mut self) -> VolatileRef<RegistersValue> {
+    pub unsafe fn as_mut(&mut self) -> VolatileRef<'_, RegistersValue> {
         VolatileRef::from_mut_ref(&mut self.value)
     }
 
@@ -81,10 +81,9 @@ impl fmt::Debug for RegistersValue {
 macro_rules! as_handler {
     ($fn: ident) => {
         paste::item! {
-            #[naked]
+            #[unsafe(naked)]
             pub extern "x86-interrupt" fn [<$fn _handler>](_sf: InterruptStackFrame) {
-                unsafe {
-                    core::arch::naked_asm!("
+                core::arch::naked_asm!("
                     push rbp
                     push rax
                     push rbx
@@ -118,7 +117,6 @@ macro_rules! as_handler {
                     pop rbp
                     iretq",
                     sym $fn);
-                }
             }
         }
     };
